@@ -26,5 +26,5 @@ app.use((error, request, response, next) => {
   })
 })
 app.listen(PORT, () => {
-  console.log(`Example app listening on PORT ${PORT}`);
+  console.log(`Server listing on PORT ${PORT}`);
 });
