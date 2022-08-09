@@ -1,9 +1,27 @@
+const knex = require("../database/knex");
+const AppError = require("../utils/AppError");
 class UserController {
 
-  create(request, response) {
-    const {name, email, password} = request.body
-    console.log(`create`);
-    response.status(200).send({name, email, password})
+
+  async create(request, response) {
+    const { name, email, password } = request.body;
+
+    const checkEmail = await knex("users")
+      .select("email")
+      .from("users")
+      .where("email", email);
+
+    if (checkEmail) {
+      throw new AppError("Email already in use");
+    }
+
+    await knex("users").insert({
+      name,
+      email,
+      password,
+    });
+
+    return response.json();
   }
 }
 
