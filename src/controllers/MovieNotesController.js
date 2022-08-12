@@ -63,7 +63,12 @@ class MovieNotesController {
         .map((tag) => tag.trim().toUpperCase());
 
       movie_note = await knex("movie_tags")
-        .select(["movie_notes.id", "movie_notes.title","movie_notes.description", "movie_notes.user_id"])
+        .select([
+          "movie_notes.id",
+          "movie_notes.title",
+          "movie_notes.description",
+          "movie_notes.user_id",
+        ])
         .where("movie_notes.user_id", user_id)
         .whereLike("movie_notes.title", `%${title}%`)
         .whereIn("name", converteTags)
@@ -75,16 +80,15 @@ class MovieNotesController {
         .orderBy("title");
     }
 
-
-    const userTags = await knex("movie_tags").where({ user_id })
-    const movieWhitTag = movie_note.map(movie => {
-      const movieTags = userTags.filter( tag => tag.movie_id === movie.id)
+    const userTags = await knex("movie_tags").where({ user_id });
+    const movieWhitTag = movie_note.map((movie) => {
+      const movieTags = userTags.filter((tag) => tag.movie_id === movie.id);
 
       return {
         ...movie_note,
-        tags: movieTags
-      }
-    })
+        tags: movieTags,
+      };
+    });
     response.json(movieWhitTag);
   }
 }

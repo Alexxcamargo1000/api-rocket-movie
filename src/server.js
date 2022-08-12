@@ -2,7 +2,7 @@ require("express-async-errors");
 const AppError = require("./utils/AppError");
 const express = require("express");
 const routes = require("./routes");
-const database = require("./database")
+const database = require("./database");
 const PORT = 3333;
 
 const app = express();
@@ -13,21 +13,20 @@ app.use(routes);
 
 database();
 
-
 app.use((error, request, response, next) => {
-  if(error instanceof AppError) {
+  if (error instanceof AppError) {
     return response.status(error.statusCode).json({
       status: "error",
-      message: error.message
-    })    
+      message: error.message,
+    });
   }
 
-  console.log(error); 
+  console.log(error);
   return response.status(500).json({
     status: "error",
-    message: "Internal Server Error"
-  })
-})
+    message: "Internal Server Error",
+  });
+});
 app.listen(PORT, () => {
   console.log(`Server listing on PORT ${PORT}`);
 });
