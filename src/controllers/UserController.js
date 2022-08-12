@@ -5,10 +5,12 @@ class UserController {
   async create(request, response) {
     const { name, email, password } = request.body;
 
+    const lowEmail = email.toLowerCase();
+
     const checkEmail = await knex("users")
       .select("email")
       .from("users")
-      .where("email", email);
+      .where("email", lowEmail);
 
     if (checkEmail.length > 0) {
       throw new AppError("Esse email já esta em uso");
@@ -18,7 +20,7 @@ class UserController {
 
     await knex("users").insert({
       name,
-      email,
+      email: lowEmail,
       password: hashedPassword,
     });
 
