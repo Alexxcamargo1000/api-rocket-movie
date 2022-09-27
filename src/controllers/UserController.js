@@ -28,28 +28,28 @@ class UserController {
   }
 
   async delete(request, response) {
-    const { id } = request.params;
+    const user_id = request.user.id;
 
     const [checkUserExists] = await knex("users")
       .select()
       .from("users")
-      .where("id", id);
+      .where("id", user_id);
 
     if (!checkUserExists) {
       throw new AppError("Usuário não existe");
     }
 
-    await knex("users").where("id", id).delete();
+    await knex("users").where("id", 23).delete();
     return response.json({
-      message: `deletado usuário ${checkUserExists.name} com o id: ${id}`,
+      message: `deletado usuário ${checkUserExists.name} com o id: ${checkUserExists.id}`,
     });
   }
 
   async update(request, response) {
     const { name, email, password, old_password } = request.body;
-    const { id } = request.params;
+    const  user_id  = request.user.id;
 
-    const [user] = await knex("users").select().from("users").where("id", id);
+    const [user] = await knex("users").select().from("users").where("id", user_id);
     const [checkEmail] = await knex("users")
       .select()
       .from("users")
@@ -77,7 +77,7 @@ class UserController {
       user.password = await hash(password, 8);
     }
 
-    await knex("users").where("id", id).update({
+    await knex("users").where("id", user_id).update({
       name,
       email,
       password: user.password,
@@ -85,7 +85,7 @@ class UserController {
     });
 
     return response.json({
-      message: `usuário com o id: ${id} foi atualizado`,
+      message: `usuário ${user.name} foi atualizado`,
     });
   }
 }
