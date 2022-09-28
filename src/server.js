@@ -3,11 +3,14 @@ const AppError = require("./utils/AppError");
 const express = require("express");
 const routes = require("./routes");
 const database = require("./database");
+const uploadConfig = require("./configs/uploads")
 const PORT = 3333;
 
 const app = express();
 
 app.use(express.json());
+
+app.use("/files", express.static(uploadConfig.UPLOAD_FOLDER))
 
 app.use(routes);
 
