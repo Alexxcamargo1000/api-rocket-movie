@@ -16,7 +16,7 @@ userRoutes.patch(
   "/avatar",
   ensureAuthenticated,
   uploadFile.single("avatar"),
-  userController.uploadAvatar
+  userController.update
 );
 
 module.exports = userRoutes;
