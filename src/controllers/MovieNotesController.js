@@ -58,7 +58,6 @@ class MovieNotesController {
     const user_id = request.user.id
 
     let movie_note;
-    console.log("user id: " + tags  );
     if (tags) {
       const converteTags = tags
         .split(",")
