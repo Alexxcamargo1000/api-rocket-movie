@@ -32,16 +32,21 @@ class UserAvatarController {
 
   async delete(request, response) {
     const user_id = request.user.id
-    const user = await knex("users").where({ id: user_id})
+    const user = await knex("users").where({ id: user_id}).first()
     const diskStorage = new DiskStorage()
+
+    console.log(user);
     if(!user.avatar) {
       throw new AppError("Avatar não existe!")
 
     }
 
     await diskStorage.delete(user.avatar)
-    await knex("users").select("avatar").where({ id: user.id}).del()
 
+    user.avatar = null
+    await knex("users").where({ id: user.id}).update(user)
+
+    return response.json(user)
   }
 
 }
