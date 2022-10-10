@@ -6,10 +6,11 @@ class MovieNotesController {
     const { title, description, rating, tags } = request.body;
     const  user_id  = request.user.id;
 
-    if (rating > 5 || rating < 1) {
-      throw new AppError("A nota tem que ser entre 1 e 5");
-    }
 
+
+    if (rating > 5 || rating < 0) {
+      throw new AppError("A nota tem que ser entre 0 e 5");
+    }
     const movie_id = await knex("movie_notes").insert({
       title,
       description,
@@ -29,7 +30,7 @@ class MovieNotesController {
       await knex("movie_tags").insert(tagsInsert);
     }
 
-    response.json({ message: `movie create` });
+    response.json({ message: `filme cadastrado` });
   }
 
   async delete(request, response) {
@@ -42,12 +43,12 @@ class MovieNotesController {
   async show(request, response) {
     const { id } = request.params;
 
-    const movie_note = await knex("movie_notes").select().where({ id });
+    const movie = await knex("movie_notes").select().where({ id }).first();
 
     const tags = await knex("movie_tags").select().where({ id: id });
 
     response.json({
-      ...movie_note,
+      movie,
       tags,
     });
   }

@@ -3,7 +3,7 @@ exports.up = (knex) =>
     table.increments("id");
     table.text("title");
     table.text("description");
-    table.enu("rating", [1, 2, 3, 4, 5]);
+    table.enu("rating", [0,1, 2, 3, 4, 5]);
     table.integer("user_id").references("id").inTable("users").onDelete("CASCADE");
     table.timestamp("created_at").default(knex.fn.now());
     table.timestamp("updated_at").default(knex.fn.now());
