@@ -6,7 +6,7 @@ const routes = require("./routes");
 const database = require("./database");
 const uploadConfig = require("./configs/uploads");
 const cors = require("cors");
-const PORT = 3333;
+const PORT = process.env.PORT || 3333;
 
 const app = express();
 app.use(cors());
