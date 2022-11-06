@@ -39,7 +39,7 @@ class UserController {
       throw new AppError("Usuário não existe");
     }
 
-    await knex("users").where("id", 23).delete();
+    await knex("users").where("id", user_id).delete();
     return response.json({
       message: `deletado usuário ${checkUserExists.name} com o id: ${checkUserExists.id}`,
     });
